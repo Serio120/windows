@@ -170,3 +170,5 @@ For most people, yes, with some caveats.
 ## Privacy note
 
 Usernames in paths have been replaced by `<user>` and personal data has been removed from screenshots.
+
+> By Claude Sonnet 5.5
