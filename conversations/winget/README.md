@@ -109,6 +109,34 @@ Install-PackageProvider -Name NuGet -Force | Out-Null
 Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
 Repair-WinGetPackageManager -AllUsers
 ```
+---
 
+Perfecto, eso suele indicar que la reparación se ha aplicado. Ahora toca comprobar que funciona:
+
+1. **Cierra por completo** la ventana de PowerShell y abre una nueva (si puedes, cierra también el símbolo del sistema).
+2. Ejecuta:
+
+```powershell
+winget --version
+```
+
+Si te devuelve un número de versión (algo como `v1.x.xxxxx`), ya está listo. Entonces prueba:
+
+```powershell
+winget search vlc
+```
+
+La primera vez puede pedirte que aceptes los términos de los orígenes (*msstore* y *winget*); escribe `S` o `Y` y pulsa Enter.
+
+**Si sigue sin reconocer `winget`** después de abrir una ventana nueva, dos cosas más que probar:
+
+- **Cerrar sesión y volver a entrar** (o reiniciar el equipo) para que Windows recargue el PATH y los alias.
+- Comprobar si se instaló pero no está en el PATH, ejecutando en PowerShell:
+
+```powershell
+Get-AppxPackage -Name Microsoft.DesktopAppInstaller | Select-Object Name, Version, InstallLocation
+```
+
+Si devuelve algo, copia aquí el resultado y vemos cómo llamarlo directamente o arreglar el alias. Si no devuelve nada, avísame y probamos la instalación manual.
 
 
