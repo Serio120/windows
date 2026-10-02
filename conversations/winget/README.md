@@ -73,5 +73,42 @@ En línea: 1 Carácter: 1
 PS C:\Users\maria>
 ```
 ---
+Sigue sin aparecer, así que vamos a ver si el paquete está instalado o falta del todo. En PowerShell ejecuta:
 
-# ppppp
+```powershell
+Get-AppxPackage -Name Microsoft.DesktopAppInstaller
+```
+
+- **Si no devuelve nada**, el Instalador de aplicación no está instalado. Pasa a la reparación de abajo.
+- **Si devuelve datos**, está instalado pero el alias o el PATH fallan. Revisa que **Instalador de aplicación** esté activado en *Configuración → Aplicaciones → Configuración avanzada de aplicaciones → Alias de ejecución de aplicaciones*, y prueba a cerrar sesión y volver a entrar.
+
+**Reparación con el método oficial de Microsoft** (también en PowerShell, pega las líneas una a una):
+
+```powershell
+Install-PackageProvider -Name NuGet -Force | Out-Null
+Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
+Repair-WinGetPackageManager -AllUsers
+```
+
+Si te pregunta por confiar en el repositorio PSGallery, responde `S` o `Y`. Cuando termine, cierra la ventana, abre una nueva y prueba `winget --version`.
+
+**Alternativa manual**, si lo anterior falla:
+
+```powershell
+cd $env:TEMP
+Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile winget.msixbundle
+Add-AppxPackage winget.msixbundle
+```
+
+Si da error de dependencias, el mensaje suele mencionar `VCLibs` o `UI.Xaml`. Si te sale algún error en cualquiera de los pasos, pégamelo tal cual y lo resolvemos.
+
+# Se instaló sin errores
+
+```powershell
+Install-PackageProvider -Name NuGet -Force | Out-Null
+Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
+Repair-WinGetPackageManager -AllUsers
+```
+
+
+
